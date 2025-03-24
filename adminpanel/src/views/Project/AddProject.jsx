@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   CCard,
   CCardBody,
@@ -12,26 +12,33 @@ import {
 } from '@coreui/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { addproject } from '../../Redux/ProjectSlice';
 import { useNavigate } from 'react-router-dom';
+import { addproject } from '../../Redux/ProjectSlice';
 
 const AddProject = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  function submitdata(data){
-    console.log(data);
-    dispatch(addproject(data))
-    alert("insterted...........")
-    navigate('/Dashboard')
-  }
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const submitdata = (data) => {
+    console.log('Form Data:', data);
+    dispatch(addproject(data));
+    alert('Inserted Successfully!');
+    navigate('/Dashboard');
+  };
+
+
 
   return (
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4 my-3">
-          <CCardHeader className='bg-dark text-light'>
+          <CCardHeader className="bg-dark text-light">
             <strong>Add Wedding Project</strong>
           </CCardHeader>
           <CCardBody>
@@ -42,21 +49,33 @@ const AddProject = () => {
                 <CFormInput
                   type="text"
                   placeholder="Type the Name"
-                  {...register('wedding_name', { required: 'Wedding name is required.' })}
+                  {...register('wedding_name', {
+                    required: 'Wedding name is required.',
+                  })}
                 />
-                {errors.wedding_name && <span className="text-danger">{errors.wedding_name.message}</span>}
+                {errors.wedding_name && (
+                  <span className="text-danger">
+                    {errors.wedding_name.message}
+                  </span>
+                )}
               </div>
 
               {/* Package */}
               <div className="mb-3">
                 <CFormLabel>Package</CFormLabel>
-                <CFormSelect {...register('Package', { required: 'Package selection is required.' })}>
+                <CFormSelect
+                  {...register('Package', {
+                    required: 'Package selection is required.',
+                  })}
+                >
                   <option value="">Select Package</option>
                   <option value="Gold">Gold</option>
                   <option value="Silver">Silver</option>
                   <option value="Platinum">Platinum</option>
                 </CFormSelect>
-                {errors.package && <span className="text-danger">{errors.package.message}</span>}
+                {errors.Package && (
+                  <span className="text-danger">{errors.Package.message}</span>
+                )}
               </div>
 
               {/* Mobile Number */}
@@ -65,47 +84,85 @@ const AddProject = () => {
                 <CFormInput
                   type="text"
                   placeholder="Enter Mobile Number"
-                  {...register('Mobile_Number', { required: 'Mobile number is required.' })}
+                  {...register('Mobile_Number', {
+                    required: 'Mobile number is required.',
+                  })}
                 />
-                {errors.mobile_number && <span className="text-danger">{errors.mobile_number.message}</span>}
+                {errors.Mobile_Number && (
+                  <span className="text-danger">
+                    {errors.Mobile_Number.message}
+                  </span>
+                )}
               </div>
 
               {/* Date */}
               <div className="mb-3">
                 <CFormLabel>Date</CFormLabel>
-                <CFormInput type="date" {...register('Date', { required: 'Date is required.' })} />
-                {errors.date && <span className="text-danger">{errors.date.message}</span>}
+                <CFormInput
+                  type="date"
+                  {...register('Date', {
+                    required: 'Date is required.',
+                  })}
+                />
+                {errors.Date && (
+                  <span className="text-danger">{errors.Date.message}</span>
+                )}
               </div>
 
               {/* Time */}
               <div className="mb-3">
                 <CFormLabel>Time</CFormLabel>
-                <CFormInput type="time" {...register('time', { required: 'Time is required.' })} />
-                {errors.time && <span className="text-danger">{errors.time.message}</span>}
+                <CFormInput
+                  type="time"
+                  {...register('time', {
+                    required: 'Time is required.',
+                  })}
+                />
+                {errors.time && (
+                  <span className="text-danger">{errors.time.message}</span>
+                )}
               </div>
 
               {/* Months */}
               <div className="mb-3">
                 <CFormLabel>Months</CFormLabel>
-                <CFormInput type="number" min="0" {...register('months')} />
+                <CFormInput
+                  type="number"
+                  min="0"
+                  {...register('months')}
+                />
               </div>
 
               {/* Days */}
               <div className="mb-3">
                 <CFormLabel>Days</CFormLabel>
-                <CFormInput type="number" min="0" {...register('days')} />
+                <CFormInput
+                  type="number"
+                  min="0"
+                  {...register('days')}
+                />
               </div>
 
               {/* Hours */}
               <div className="mb-3">
                 <CFormLabel>Hours</CFormLabel>
-                <CFormInput type="number" min="0" max="23" {...register('hours')} />
+                <CFormInput
+                  type="number"
+                  min="0"
+                  max="23"
+                  {...register('hours')}
+                />
               </div>
 
-              {/* Minutes */}
+              {/* Miniutes (match schema spelling) */}
               <div className="mb-3">
                 <CFormLabel>Minutes</CFormLabel>
-                <CFormInput type="number" min="0" max="59" {...register('miniutes')} />
+                <CFormInput
+                  type="number"
+                  min="0"
+                  max="59"
+                  {...register('miniutes')}
+                />
               </div>
 
               {/* Pin */}
@@ -114,7 +171,11 @@ const AddProject = () => {
                 <CFormInput type="number" {...register('pin')} />
               </div>
 
-          
+              {/* File Upload */}
+              <div className="mb-3">
+                <CFormLabel>File Upload</CFormLabel>
+                <CFormInput type="file" {...register('wedding_img')} />
+              </div>
 
               {/* Select Members */}
               <div className="mb-3">
@@ -132,7 +193,7 @@ const AddProject = () => {
                 </CFormSelect>
               </div>
 
-              {/* Select Terms and Conditions */}
+              {/* Terms and Conditions */}
               <div className="mb-3">
                 <CFormLabel>Terms & Conditions</CFormLabel>
                 <CFormSelect {...register('terms')}>
@@ -151,7 +212,6 @@ const AddProject = () => {
                   Submit
                 </button>
               </div>
-
             </CForm>
           </CCardBody>
         </CCard>

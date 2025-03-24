@@ -1,16 +1,49 @@
 const { Schema, model } = require("mongoose");
 
-const Projectschema = new Schema({
-    wedding_name: String,
-    Package: String,
-    Date: Date,
-    Mobile_Number: Number,
-    months: Number,
-    days: Number,
-    hours: Number,
-    miniutes: Number,
-    pin: Number,
-})
+const ProjectSchema = new Schema({
+    wedding_name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    Package: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    Date: {
+        type: Date,
+        required: true
+    },
+    Mobile_Number: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    months: {
+        type: Number,
+        default: 0
+    },
+    days: {
+        type: Number,
+        default: 0
+    },
+    hours: {
+        type: Number,
+        default: 0
+    },
+    minutes: {
+        type: Number,
+        default: 0
+    },
+    pin: {
+        type: String,
+        trim: true
+    },
+    wedding_img: {
+        type: String
+    }
+});
 
-const Project = model('project', Projectschema)
-module.exports = Project
+const ProjectModel = model("Project", ProjectSchema);
+module.exports = ProjectModel;

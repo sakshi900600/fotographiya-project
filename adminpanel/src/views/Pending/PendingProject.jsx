@@ -59,10 +59,10 @@ const PendingProject = () => {
                                 {ProjectList?.map((ele, index) => (
                                     <CTableRow key={ele._id}>
                                         <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                                        <CTableDataCell>{ele.wedding_name}</CTableDataCell>
-                                        <CTableDataCell>{ele.Package}</CTableDataCell>
-                                        <CTableDataCell>{ele.Mobile_Number}</CTableDataCell>
-                                        <CTableDataCell>{ele.Date}</CTableDataCell>
+                                        <CTableDataCell>{ele?.wedding_name}</CTableDataCell>
+                                        <CTableDataCell>{ele?.Package}</CTableDataCell>
+                                        <CTableDataCell>{ele?.Mobile_Number}</CTableDataCell>
+                                        <CTableDataCell>{ele?.Date}</CTableDataCell>
                                         <CTableDataCell>
                                             <button className='btn btn-danger' onClick={() => trash(ele._id)}><FaTrash /></button>
                                             <NavLink to={`/Project/UpdateProject/${ele._id}`}>

@@ -3,6 +3,8 @@ import usericon from '../assets/images/usericon.png';
 import images from '../layouts/HaldiData';
 import MehndiPage from './MehndiPage';
 import { FaUnlockAlt } from 'react-icons/fa'
+import haldiimg from '../assets/images/haldi1.jpeg'
+
 
 const HaldiPage = () => {
     const [checkedImages, setCheckedImages] = useState(new Set());
@@ -126,7 +128,86 @@ const HaldiPage = () => {
                             <button className="btn mx-3 shadow mt-2">
                                 Select pic {haldiImagesSelected} / {MAX_SELECTION}
                             </button>
-                            <button className="btn mx-3 shadow mt-2">Replace</button>
+                            <button className="btn mx-3 shadow mt-2" data-bs-toggle="modal" data-bs-target="#replaceModal">Replace</button>
+                            <div
+  className="modal fade"
+  id="replaceModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabIndex="-1"
+  aria-labelledby="replaceModalLabel"
+  aria-hidden="true"
+>
+  <div className="modal-dialog modal-xl"> {/* Changed from modal-lg to modal-xl */}
+    <div className="modal-content">
+      <div className="modal-header invite-header">
+        <h5 className="modal-title" id="replaceModalLabel">Replace Images</h5>
+        <button
+          type="button"
+          className="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div className="modal-body">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-3 mb-3">
+              <img
+                src={haldiimg}
+                alt=""
+                style={{
+                  height: '200px',
+                  width: '200px',
+                  borderRadius: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
+            <div className="col-lg-3 mb-3">
+              <img
+                src={haldiimg}
+                alt=""
+                style={{
+                  height: '200px',
+                  width: '200px',
+                  borderRadius: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
+            <div className="col-lg-3 mb-3">
+              <img
+                src={haldiimg}
+                alt=""
+                style={{
+                  height: '200px',
+                  width: '200px',
+                  borderRadius: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
+            <div className="col-lg-3 mb-3">
+              <img
+                src={haldiimg}
+                alt=""
+                style={{
+                  height: '200px',
+                  width: '200px',
+                  borderRadius: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
                         </div>
                     </div>
                 </div>

@@ -1,51 +1,80 @@
-const projectmodel = require("../model/ProjectModel")
-const store = async (req, res) => {
-    console.log(req.body);
+const ProjectModel = require('../model/ProjectModel')
 
-    const { wedding_name, Package, Date, Mobile_Number, months, days, hours, miniutes, pin } = req.body
-    const project = await projectmodel.create({
-        wedding_name,
-        Package,
-        Date,
-        Mobile_Number,
-        months,
-        days,
-        hours,
-        miniutes,
-        pin
-    })
-    res.json("inserted.......")
-}
+const store = async (req, res) => {
+  console.log(req.body);
+
+  try {
+    const {
+      wedding_name,
+      Package,
+      Date,
+      Mobile_Number,
+      months,
+      days,
+      hours,
+      minutes,
+      pin,
+      members,
+      terms
+    } = req.body;
+
+
+
+    const project = await ProjectModel.create({
+      wedding_name,
+      Package,
+      Date,
+      Mobile_Number,
+      months,
+      days,
+      hours,
+      minutes,
+      pin,
+      members,
+      terms,
+      wedding_img: req?.file?.filename
+    });
+    res.json({ message: "Inserted successfully", project });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error inserting project", error: error.message });
+  }
+};
+
+
+
+
+
 
 const index = async (req, res) => {
-    const project = await projectmodel.find();
-    res.json({
-        success: true,
-        project
-    })
+  const project = await ProjectModel.find();
+  res.json({
+    success: true,
+    project
+  })
 }
 
 const trash = async (req, res) => {
-    const { id } = req.params;
-    const project = await projectmodel.findByIdAndDelete(id)
-    // res.json("record delete")
-    res.redirect('/Pending')
+  const { id } = req.params;
+  const project = await ProjectModel.findByIdAndDelete(id)
+  // res.json("record delete")
+  res.redirect('/Pending')
 }
 
 const edit = async (req, res) => {
-    const { id } = req.params
-    const {wedding_name, Package, Mobile_Number, months, days, hours, miniutes, pin} = req.body
-    await projectmodel.findByIdAndUpdate(
-        {
-            _id: id
-        },
-        {
-            wedding_name, Package, Mobile_Number, months, days, hours, miniutes, pin
-        }
-    )
-    res.json({
-        message:"updated...."
-    })
+  const { id } = req.params
+  const { wedding_name, Package, Mobile_Number, months, days, hours, miniutes, pin } = req.body
+  await ProjectModel.findByIdAndUpdate(
+    {
+      _id: id
+    },
+    {
+      wedding_name, Package, Mobile_Number, months, days, hours, miniutes, pin
+    }
+  )
+  res.json({
+    message: "updated...."
+  })
 }
 
 

@@ -1,11 +1,12 @@
 const express = require('express')
-const app = express()
+const router = express.Router() 
 
 const projectcontroller = require('../controller/ProjectController')
-app.post('/',projectcontroller.store)
-app.get('/',projectcontroller.index)
-app.delete('/:id',projectcontroller.trash)
-app.put('/:id',projectcontroller.edit)
+const upload = require('../middleware/upload.file')
 
+router.post('/', upload.single('wedding_img'), projectcontroller.store)
+router.get('/', projectcontroller.index)
+router.delete('/:id', projectcontroller.trash)
+router.put('/:id', projectcontroller.edit)
 
-module.exports = app
+module.exports = router

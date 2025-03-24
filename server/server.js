@@ -13,6 +13,8 @@ app.use(express.static('public'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+app.use('/public',express.static('uploads/haldi'))
+
 
 const projectrouter = require('./routers/ProjectRouter')
 const adminrouter = require('./routers/AdminRouter')
