@@ -24,13 +24,83 @@ const AddProject = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [previewImages, setPreviewImages] = React.useState([]);
+
+
+  // const submitdata = (data) => {
+  //   console.log('Form Data:', data);
+  //   dispatch(addproject(data));
+  //   alert('Inserted Successfully!');
+  //   navigate('/Dashboard');
+  // };
+
+  // const submitdata = (data) => {
+  //   console.log("data",data)
+  //   const formData = new FormData();
+  //   formData.append('wedding_name', data.wedding_name);
+  //   formData.append('Package', data.Package);
+  //   formData.append('Mobile_Number', data.Mobile_Number);
+  //   formData.append('Date', data.Date);
+  //   formData.append('time', data.time);
+  //   formData.append('months', data.months);
+  //   formData.append('days', data.days);
+  //   formData.append('hours', data.hours);
+  //   formData.append('miniutes', data.miniutes);
+  //   formData.append('pin', data.pin);
+  //   formData.append('members', data.members);
+  //   formData.append('terms', data.terms);
+
+  //   // File handling
+  //   if (data.wedding_face && data.wedding_face[0]) {
+  //     formData.append('wedding_face', data.wedding_face[0]);
+  //   }
+  //   if (data.wedding_img && data.wedding_img[0]) {
+  //     formData.append('wedding_img', data.wedding_img[0]);
+  //   }
+  //   console.log("formData",formData)
+
+  //   console.log('Form Data:', [...formData.entries()]); // Debugging ke liye
+  //   dispatch(addproject(formData));
+  //   alert('Inserted Successfully!');
+  //   navigate('/Dashboard');
+  // };
 
   const submitdata = (data) => {
-    console.log('Form Data:', data);
-    dispatch(addproject(data));
+    console.log("data", data);
+    const formData = new FormData();
+
+    formData.append('wedding_name', data.wedding_name);
+    formData.append('Package', data.Package);
+    formData.append('Mobile_Number', data.Mobile_Number);
+    formData.append('Date', data.Date);
+    formData.append('time', data.time);
+    formData.append('months', data.months);
+    formData.append('days', data.days);
+    formData.append('hours', data.hours);
+    formData.append('miniutes', data.miniutes);
+    formData.append('pin', data.pin);
+    formData.append('members', data.members);
+    formData.append('terms', data.terms);
+
+    // Single file for wedding_face
+    if (data.wedding_face && data.wedding_face[0]) {
+      formData.append('wedding_face', data.wedding_face[0]);
+    }
+
+    // Multiple files for wedding_img
+    if (data.wedding_img && data.wedding_img.length > 0) {
+      for (let i = 0; i < data.wedding_img.length; i++) {
+        formData.append('wedding_img', data.wedding_img[i]);
+      }
+    }
+
+    console.log('Form Data:', [...formData.entries()]); // Debugging purpose
+    dispatch(addproject(formData));
     alert('Inserted Successfully!');
     navigate('/Dashboard');
   };
+
+
 
 
 
@@ -42,7 +112,7 @@ const AddProject = () => {
             <strong>Add Wedding Project</strong>
           </CCardHeader>
           <CCardBody>
-            <CForm method="post" onSubmit={handleSubmit(submitdata)}>
+            <CForm method="post" onSubmit={handleSubmit(submitdata)} encType='multipart/form'>
               {/* Wedding Name */}
               <div className="mb-3">
                 <CFormLabel>Wedding Name</CFormLabel>
@@ -50,7 +120,6 @@ const AddProject = () => {
                   type="text"
                   placeholder="Type the Name"
                   {...register('wedding_name', {
-                    required: 'Wedding name is required.',
                   })}
                 />
                 {errors.wedding_name && (
@@ -65,7 +134,6 @@ const AddProject = () => {
                 <CFormLabel>Package</CFormLabel>
                 <CFormSelect
                   {...register('Package', {
-                    required: 'Package selection is required.',
                   })}
                 >
                   <option value="">Select Package</option>
@@ -85,7 +153,6 @@ const AddProject = () => {
                   type="text"
                   placeholder="Enter Mobile Number"
                   {...register('Mobile_Number', {
-                    required: 'Mobile number is required.',
                   })}
                 />
                 {errors.Mobile_Number && (
@@ -101,7 +168,6 @@ const AddProject = () => {
                 <CFormInput
                   type="date"
                   {...register('Date', {
-                    required: 'Date is required.',
                   })}
                 />
                 {errors.Date && (
@@ -115,7 +181,6 @@ const AddProject = () => {
                 <CFormInput
                   type="time"
                   {...register('time', {
-                    required: 'Time is required.',
                   })}
                 />
                 {errors.time && (
@@ -172,9 +237,37 @@ const AddProject = () => {
               </div>
 
               {/* File Upload */}
+
+              {/* Wedding Image (Multiple Uploads) */}
               <div className="mb-3">
-                <CFormLabel>File Upload</CFormLabel>
-                <CFormInput type="file" {...register('wedding_img')} />
+                <CFormLabel>Wedding Images (Multiple Uploads)</CFormLabel>
+                <CFormInput
+                  type="file"
+                  multiple
+                  {...register('wedding_img')}
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    setPreviewImages([...files].map((file) => URL.createObjectURL(file)));
+                  }}
+                />
+                <div className="mt-2 d-flex flex-wrap gap-2">
+                  {previewImages.map((img, index) => (
+                    <img
+                      key={index}
+                      src={img}
+                      alt={`Preview ${index}`}
+                      className="rounded"
+                      width="100"
+                      height="100"
+                    />
+                  ))}
+                </div>
+              </div>
+
+
+              <div className="mb-3">
+                <CFormLabel>Wedding Face</CFormLabel>
+                <CFormInput type="file" {...register('wedding_face')} />
               </div>
 
               {/* Select Members */}

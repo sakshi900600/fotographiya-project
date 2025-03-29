@@ -2,6 +2,15 @@ const ProjectModel = require('../model/ProjectModel')
 
 const store = async (req, res) => {
   console.log(req.body);
+  var arr = []
+
+  req.files.wedding_img.forEach(image => {
+    arr.push(image.filename)
+  });
+  var singleimg = "";
+  if (req.files.wedding_face !== undefined) {
+    singleimg = req.files.wedding_face[0].filename
+  }
 
   try {
     const {
@@ -32,7 +41,7 @@ const store = async (req, res) => {
       pin,
       members,
       terms,
-      wedding_img: req?.file?.filename
+      wedding_face: singleimg, wedding_img: arr
     });
     res.json({ message: "Inserted successfully", project });
   } catch (error) {

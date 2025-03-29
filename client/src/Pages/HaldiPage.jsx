@@ -3,12 +3,15 @@ import usericon from '../assets/images/usericon.png';
 import images from '../layouts/HaldiData';
 import MehndiPage from './MehndiPage';
 import { FaUnlockAlt } from 'react-icons/fa'
-import haldiimg from '../assets/images/haldi1.jpeg'
+import { useEffect } from 'react';
+import axios from 'axios';
 
 
 const HaldiPage = () => {
     const [checkedImages, setCheckedImages] = useState(new Set());
     const [showLimitReachedPopup, setShowLimitReachedPopup] = useState(false);
+    const [fase, setFase] = useState([])
+    const [haldi, setHaldi] = useState([])
     const MAX_SELECTION = 5;
 
     const handleCheckboxChange = (id) => {
@@ -48,6 +51,44 @@ const HaldiPage = () => {
     };
 
     const haldiImagesSelected = checkedImages.size;
+
+    const fetchCountdown = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/wedding');
+
+            if (response.data && response.data.project && response.data.project.length > 0) {
+                console.log(response.data.project);
+                setFase(response.data.project); // Ensure accessing a valid index
+            } else {
+                console.warn("No project data found.");
+            }
+        } catch (error) {
+            console.error('Error fetching countdown data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCountdown();
+    }, []);
+
+
+    async function haldidata() {
+        try {
+            const response = await axios.get('http://localhost:8000/api/wedding');
+            if (response.data && response.data.project && response.data.project.length > 0) {
+                console.log(response.data.project);
+                setHaldi(response.data.project); // Ensure accessing a valid index
+            } else {
+                console.warn("No project data found.");
+            }
+        } catch (error) {
+            console.error('Error fetching countdown data:', error);
+        }
+    }
+
+    useEffect(() => {
+        haldidata()
+    }, [])
 
     return (
         <div>
@@ -130,82 +171,66 @@ const HaldiPage = () => {
                             </button>
                             <button className="btn mx-3 shadow mt-2" data-bs-toggle="modal" data-bs-target="#replaceModal">Replace</button>
                             <div
-  className="modal fade"
-  id="replaceModal"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabIndex="-1"
-  aria-labelledby="replaceModalLabel"
-  aria-hidden="true"
->
-  <div className="modal-dialog modal-xl"> {/* Changed from modal-lg to modal-xl */}
-    <div className="modal-content">
-      <div className="modal-header invite-header">
-        <h5 className="modal-title" id="replaceModalLabel">Replace Images</h5>
-        <button
-          type="button"
-          className="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div className="modal-body">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-3 mb-3">
-              <img
-                src={haldiimg}
-                alt=""
-                style={{
-                  height: '200px',
-                  width: '200px',
-                  borderRadius: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-            </div>
-            <div className="col-lg-3 mb-3">
-              <img
-                src={haldiimg}
-                alt=""
-                style={{
-                  height: '200px',
-                  width: '200px',
-                  borderRadius: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-            </div>
-            <div className="col-lg-3 mb-3">
-              <img
-                src={haldiimg}
-                alt=""
-                style={{
-                  height: '200px',
-                  width: '200px',
-                  borderRadius: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-            </div>
-            <div className="col-lg-3 mb-3">
-              <img
-                src={haldiimg}
-                alt=""
-                style={{
-                  height: '200px',
-                  width: '200px',
-                  borderRadius: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+                                className="modal fade"
+                                id="replaceModal"
+                                data-bs-backdrop="static"
+                                data-bs-keyboard="false"
+                                tabIndex="-1"
+                                aria-labelledby="replaceModalLabel"
+                                aria-hidden="true"
+                            >
+                                <div className="modal-dialog modal-xl"> {/* Changed from modal-lg to modal-xl */}
+                                    <div className="modal-content">
+                                        <div className="modal-header invite-header">
+                                            <h5 className="modal-title" id="replaceModalLabel">Replace Images</h5>
+                                            <button
+                                                type="button"
+                                                className="btn-close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                            ></button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <div className="container">
+                                                <div className="row">
+                                                    {/* <div className="col-lg-3 mb-3">
+                                                        <img
+                                                            src={haldiimg}
+                                                            alt=""
+                                                            style={{
+                                                                height: '200px',
+                                                                width: '200px',
+                                                                borderRadius: '100%',
+                                                                objectFit: 'cover',
+                                                            }}
+                                                        />
+                                                    </div> */}
+                                                    {fase.length > 0 ? (
+                                                        fase.map((item, index) => (
+                                                            <div className="col-lg-3 mb-3" key={index}>
+                                                                <img
+                                                                    src={`http://localhost:8000/public/face/${item.wedding_face}`}
+                                                                    alt="Wedding Image"
+                                                                    style={{
+                                                                        height: '200px',
+                                                                        width: '200px',
+                                                                        borderRadius: '100%',
+                                                                        objectFit: 'cover',
+                                                                    }}
+                                                                    onError={(e) => e.target.src = haldiimg} // Fallback in case of broken images
+                                                                />
+                                                            </div>
+                                                        ))
+                                                    ) : (
+                                                        <p>No images found</p>
+                                                    )}
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                         </div>
@@ -214,7 +239,7 @@ const HaldiPage = () => {
 
 
 
-                <div className="image-container">
+                {/* <div className="image-container">
                     <div className="row">
                         {images.map((image) => (
                             <div className="col-lg-2" key={image.id}>
@@ -231,11 +256,36 @@ const HaldiPage = () => {
                             </div>
                         ))}
                     </div>
+                </div> */}
+
+                <div className="image-container">
+                    <div className="row">
+                        {haldi.map((ele, index) => (
+                            <div className="col-lg-2" key={index}>
+                                <div className="image-item">
+                                    <img
+                                        src={`http://localhost:8000/public/haldi/${ele.wedding_img}`}
+                                        alt="Haldi Image"
+                                        className="image"
+                                        onError={(e) => e.target.src = "path/to/fallback-image.jpg"}
+                                    />
+                                    <input
+                                        type="checkbox"
+                                        checked={checkedImages.has(ele.wedding_img)}
+                                        onChange={() => handleCheckboxChange(ele.wedding_img)}
+                                        className="checkbox"
+                                        disabled={checkedImages.size >= MAX_SELECTION && !checkedImages.has(ele.wedding_img)}
+                                    />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
+
             </div>
 
             {/* Popup for selection limit */}
-            {showLimitReachedPopup ?
+            {/* {showLimitReachedPopup ?
                 (
                     <div className="popup-overlay">
                         <div className="popup-content">
@@ -251,7 +301,9 @@ const HaldiPage = () => {
                         </div>
                     </div>
                 )
-                : (<MehndiPage haldiImagesSelected={haldiImagesSelected} />)}
+                : (<MehndiPage haldiImagesSelected={haldiImagesSelected} />)} */}
+
+
         </div>
     );
 };

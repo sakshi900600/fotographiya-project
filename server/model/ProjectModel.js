@@ -40,8 +40,11 @@ const ProjectSchema = new Schema({
         type: String,
         trim: true
     },
-    wedding_img: {
+    wedding_face: {
         type: String
+    },
+    wedding_img: {
+        type: []
     }
 });
 
