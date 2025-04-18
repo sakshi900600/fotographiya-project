@@ -1,0 +1,192 @@
+/* Base Styles */
+.pageContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}
+
+/* Navbar - Smaller size */
+.navbar {
+  padding: 1rem 5rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  height: 2rem;
+}
+
+/* Main Container - More compact */
+.loginContainer {
+  display: flex;
+  flex: 1;
+  max-width: 1000px;
+  margin: 1.5rem auto;
+  width: 100%;
+  padding: 0 1.5rem;
+}
+
+/* Left Side - Image - Updated for better mobile display */
+.imageSection {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  
+}
+
+.loginImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
+  border-radius: 6px;
+  max-height: 500px;
+}
+
+/* Right Side - Form */
+.formSection {
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.formContent {
+  padding: 2rem;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.welcomeTitle {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.loginPrompt {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup {
+  margin-bottom: 1.2rem;
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.termsGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.termsCheckbox {
+  width: 16px;
+  height: 16px;
+  accent-color: black;
+}
+
+.termsLabel {
+  color: #555;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.termsLabel a {
+  color: black;
+  text-decoration: underline;
+}
+
+.loginButton {
+  background: black;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+}
+
+.loginButton:hover {
+  background: rgb(68, 67, 67);
+}
+
+.loginButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive Design - Updated for better image handling */
+@media (max-width: 768px) {
+  .loginContainer {
+    flex-direction: column;
+    padding: 0 1rem;
+    margin: 1rem auto;
+  }
+
+  .imageSection,
+  .formSection {
+    padding: 1rem;
+  }
+
+  .loginImage {
+    max-height: 400px; /* Increased from 300px */
+    object-position: center top; /* Focus on the top part of image */
+  }
+
+  .formContent {
+    padding: 1.5rem;
+  }
+
+  .welcomeTitle {
+    font-size: 2rem; /* Slightly larger for medium screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.8rem;
+  }
+
+  .loginContainer {
+    padding: 0 0.8rem;
+  }
+
+  .formContent {
+    padding: 1.2rem;
+  }
+
+  .loginImage {
+    max-height: 350px; /* Adjusted for very small screens */
+    object-fit: cover; /* Switch back to cover for very small screens */
+    object-position: center 30%; /* Focus on upper portion of image */
+  }
+
+  .welcomeTitle {
+    font-size: 1.8rem;
+  }
+}

@@ -1,159 +1,106 @@
 import React, { useEffect, useState } from 'react';
-import headerlogo from '../assets/images/headerlogo.png';
-import { LuBellRing } from 'react-icons/lu';
-import axios from 'axios';
+import { BellRing, ChevronDown } from 'lucide-react';
+import Logo from '/logo.png';
 
 const HeaderCopy = () => {
-  // const [username, setUsername] = useState('');
-  const [countdown, setCountdown] = useState({ months: 0, days: 0, hours: 0, miniutes: 0 });
+    const [timer, setTimer] = useState({
+      months: 2,
+      days: 15,
+      hours: 10,
+      minutes: 45,
+      seconds: 30
+    });
 
-  // Fetch username from localStorage
-  // useEffect(() => {
-  //   const storedUsername = localStorage.getItem('username');
-  //   if (storedUsername) {
-  //     setUsername(storedUsername);
-  //   }
-  // }, []);
+    // Timer countdown effect
+    useEffect(() => {
+        const countdown = setInterval(() => {
+            setTimer(prevTimer => {
+                let { months, days, hours, minutes, seconds } = prevTimer;
 
-  // Fetch countdown data from API
-  const fetchCountdown = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/wedding');
-  
-      if (response.data && response.data.project && response.data.project.length > 0) {
-        console.log(response.data.project);
-        setCountdown(response.data.project[0]); // Ensure accessing a valid index
-      } else {
-        console.warn("No project data found.");
-      }
-    } catch (error) {
-      console.error('Error fetching countdown data:', error);
-    }
-  };
-  
-  useEffect(() => {
-    fetchCountdown();
-  }, []);
+                seconds--;
 
-  return (
-    <div>
-      <header>
-        <div className="container h-logo">
-          <div className="row justify-content-between align-items-center">
-            {/* Logo Section */}
-            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 text-center text-lg-start">
-              <img
-                src={headerlogo}
-                className="w-25 w-sm-20 w-md-15 w-lg-10"
-                alt="Header Logo"
-              />
-            </div>
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
 
-            {/* Countdown Section */}
-            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 text-center py-3">
-              <div className="countdown mx-auto p-3 d-flex justify-content-center align-items-center flex-wrap">
-                <button type="button" className="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  <div className="shadow p-1 rounded">
-                    <span className="countdown-box">
-                      {countdown.months || 0} <br /> months
-                    </span>
-                    <span className="countdown-box">
-                      {countdown.days || 0} <br /> days
-                    </span>
-                    <span className="countdown-box">
-                      {countdown.hours || 0} <br /> hours
-                    </span>
-                    <span className="countdown-box">
-                      {countdown.miniutes || 0} <br /> minutes
-                    </span>
+                    if (minutes < 0) {
+                        minutes = 59;
+                        hours--;
 
-                  </div>
-                  <div className="countdown-text text-center">
-                    Time Limit <br />
-                    <small>terms and conditions</small>
-                  </div>
-                </button>
-              </div>
+                        if (hours < 0) {
+                            hours = 23;
+                            days--;
 
-              {/* Modal */}
-              <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            if (days < 0) {
+                                days = 30;
+                                months--;
+
+                                if (months < 0) {
+                                    clearInterval(countdown);
+                                    return prevTimer;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return { months, days, hours, minutes, seconds };
+            });
+        }, 1000);
+
+        return () => clearInterval(countdown);
+    }, []);
+
+    // Formatting time to add 0 in 1 digit number
+    const formatTime = (time) => {
+        return time < 10 ? `0${time}` : time;
+    };
+
+    return (
+        <>
+            <nav className="sticky top-0 z-50 bg-white shadow-md px-[1vw]">
+                <div className="mx-auto flex justify-between items-center p-4">
+                    <div className="flex items-center">
+                        <img src={Logo} alt="" className="w-[220px] h-[50px] md:w-[220px] md:h-[50px] sm:w-[130px] sm:h-[40px] xs:w-[115px] xs:h-[40px]" />
                     </div>
-                    <div className="modal-body">
-                      <div className="container d-flex justify-content-center align-items-center min-vh-75">
-                        <div className="timer-container">
-                          <div className="timer shadow p-1 rounded">
-                            <span className="countdown-box shadow">
-                              {countdown.months || 0} <br /> months
-                            </span>
-                            <span className="countdown-box shadow">
-                              {countdown.days || 0} <br /> days
-                            </span>
-                            <span className="countdown-box shadow">
-                              {countdown.hours || 0} <br /> hours
-                            </span>
-                            <span className="countdown-box shadow">
-                              {countdown.miniutes || 0} <br /> minutes
-                            </span>
-                          </div>
-                          <div className="countdown-text fs-4">
-                            Time Limit <br />
-                          </div>
-                          {/* Pricing Options */}
-                          <div className="row t-limit mt-3 ms-2">
-                            <div className="col-6">
-                              <button className="btn w-100">1 Week</button>
+
+                    <div className="hidden md:flex items-center gap-4">
+                        <div className="text-lg font-bold">Time Left</div>
+
+                        <div className="flex items-center gap-1 bg-gray-200 text-white p-[0.3rem] rounded">
+                            <div className="flex flex-col items-center justify-center bg-[#1c0274] text-white p-[0.3rem] rounded text-xs">
+                                <span>{formatTime(timer.months)}</span>
+                                <span>Month</span>
                             </div>
-                            <div className="col-6">
-                              <button className="btn btn-light rounded w-100">199/-</button>
+
+                            <div className="flex flex-col items-center justify-center bg-[#1c0274] text-white p-[0.3rem] rounded text-xs">
+                                <span>{formatTime(timer.days)}</span>
+                                <span>Days</span>
                             </div>
-                          </div>
-                          <div className="row t-limit mt-3 ms-2">
-                            <div className="col-6">
-                              <button className="btn w-100">1 Month</button>
+
+                            <div className="flex flex-col items-center justify-center bg-[#1c0274] text-white p-[0.3rem] rounded text-xs">
+                                <span>{formatTime(timer.hours)}</span>
+                                <span>Hours</span>
                             </div>
-                            <div className="col-6">
-                              <button className="btn btn-light w-100">299/-</button>
+
+                            <div className="flex flex-col items-center justify-center bg-[#1c0274] text-white p-[0.3rem] rounded text-xs">
+                                <span>{formatTime(timer.minutes)}</span>
+                                <span>Min</span>
                             </div>
-                          </div>
-                          <div className="row t-limit mt-3 ms-2">
-                            <div className="col-6">
-                              <button className="btn w-100">1 Year</button>
-                            </div>
-                            <div className="col-6">
-                              <button className="btn btn-light w-100">699/-</button>
-                            </div>
-                          </div>
-                          <p className="mt-3 text-center">
-                            Do you have a time limit? If you exceed <br />
-                            the time limit, you'll be charged extra.
-                          </p>
                         </div>
-                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            {/* User Section */}
-            <div className="col-xl-4 col-lg-4 col-md-4 col-sm-12 text-center text-lg-end py-3">
-              <div className="user-section d-flex align-items-center justify-content-center justify-content-lg-end">
-                <LuBellRing className="mt-1 me-2 fs-5" />
-                <h6 className="mb-0 d-none d-sm-block">{countdown.wedding_name}</h6>
-                <button className="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  ▼
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-    </div>
-  );
+                    <div className="flex items-center justify-center gap-2 cursor-pointer">
+                        <BellRing className="w-6 h-6 md:w-6 md:h-6 sm:w-[19px] xs:hidden" />
+                        <div className="flex items-center gap-1">
+                            <span className="text-sm md:text-base sm:text-[13px] xs:text-[15px]">DISHANT MEWARA</span>
+                            <ChevronDown className="w-6 h-6 md:w-6 md:h-6 sm:w-[15px] xs:w-[15px]" />
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </>
+    );
 };
 
 export default HeaderCopy;

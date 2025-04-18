@@ -1,0 +1,109 @@
+/* Footer.module.css */
+
+.footer {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 40px 0;
+    width: 100%;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  
+  .footerContent {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .aboutSection {
+    flex: 1;
+    min-width: 300px;
+    margin-right: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .heading {
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+  
+  .aboutText {
+    color: #aaaaaa;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 400px;
+  }
+  
+  .socialIcons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .socialLink {
+    display: inline-block;
+  }
+  
+  .socialIcon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+  }
+  
+  .socialIcon:hover {
+    transform: scale(1.1);
+  }
+  
+  .contactSection {
+    flex: 0 0 auto;
+  }
+  
+  .contactInfo {
+    color: #aaaaaa;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  /* Media Queries for Responsive Design */
+  
+  /* Tablets */
+  @media screen and (max-width: 768px) {
+    .footerContent {
+      flex-direction: column;
+    }
+    
+    .aboutSection {
+      margin-right: 0;
+      margin-bottom: 30px;
+      min-width: 100%;
+    }
+    
+    .contactSection {
+      width: 100%;
+    }
+  }
+  
+  /* Mobile Phones */
+  @media screen and (max-width: 480px) {
+    .footer {
+      padding: 30px 0;
+    }
+    
+    .container {
+      padding: 0 15px;
+    }
+    
+    .heading {
+      font-size: 16px;
+    }
+    
+    .aboutText {
+      font-size: 14px;
+    }
+  }
